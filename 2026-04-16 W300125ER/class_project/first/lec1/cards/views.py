@@ -25,7 +25,7 @@ def users_details(request, id):
 def by_year(request, year):
     print(year, type(year))
 
-    return HttpResponse(f"The Selected Year is: {year}")
+    return HttpResponse(f"The Selected Year is: {year}", )
 
 
 
