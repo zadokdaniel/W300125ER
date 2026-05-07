@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}
+        General Title
+      {% endblock %}
+    </title>
+
+    <link rel="stylesheet" href="{% static 'polls/css/styles.css' %}" />
+    <script src="{% static 'polls/js/script.js' %}"></script>
+  </head>
+  <body>
+    <!-- Header -->
+    {% include 'polls/header.html' %}
+    <!-- NavBar -->
+    {% include 'polls/navbar.html' %}
+    <!-- MAIN (block) -->
+    {% block content %}
+      MAIN CONTENT
+    {% endblock %}
+    <!-- Footer -->
+    {% include 'polls/footer.html' %}
+  </body>
+</html>
