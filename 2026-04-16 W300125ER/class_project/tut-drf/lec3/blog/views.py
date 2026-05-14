@@ -2,34 +2,44 @@ from django.shortcuts import render
 # from django.http import HttpRequest, JsonResponse
 from .models import Post
 from .serializer import PostSerializer
+from rest_framework.views import APIView
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.request import Request
 
 
-# Create your views here.
+class PostViews(APIView):
+    name = 'PostViews'
+    throttle_class = []
+    permissions_classes = []
+    authentication_classes = []
 
-@api_view(['GET', 'POST'])
-def posts(request: Request):
+    def get(self, request: Request):
+        posts = Post.objects.all()
+        serialized = PostSerializer(posts, many=True)
+        return Response({'posts': serialized.data})
 
-    if (request.method == 'GET'):
-        serialized = PostSerializer(Post.objects.all(), many=True)
-        return Response({
-            'posts': serialized.data
-        })
-
-    elif (request.method == 'POST'):
+    def post(self, request: Request):
         post = PostSerializer(data=request.data)
-        post.is_valid(raise_exception=True)
+
+        if not post.is_valid:
+            return Response({'errors': post.error_messages}, status=status.HTTP_400_BAD_REQUEST)
+
         post.save()
-        return Response(post.data, status=201)
+        return Response(post.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(['GET'])
-def post_by_pk(request: Request, pk: int):
-    try:
-        post = Post.objects.get(pk=pk)
-    except Post.DoesNotExist:
-        return Response({"error": "Post not found"}, status=404)
+class PostViewByPk(APIView):
+    name = 'PostByPkViews'
+    throttle_class = []
+    permissions_classes = []
+    authentication_classes = []
 
-    return Response({'post': PostSerializer(post).data})
+    def get(self, request: Request, pk: int):
+        try:
+            post = Post.objects.get(pk=pk)
+        except Post.DoesNotExist:
+            return Response({'errors': 'Post not found with the id {pk}'}, status=status.HTTP_404_NOT_FOUND)
+        serialized = PostSerializer(post)
+        return Response({'post': serialized.data})

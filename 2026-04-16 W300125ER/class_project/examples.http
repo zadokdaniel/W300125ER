@@ -1,4 +1,3 @@
 @local=http://localhost:8000
 
-POST {{local}}/1/
-
+GET {{local}}/posts/

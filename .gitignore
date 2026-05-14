@@ -63,3 +63,4 @@ desktop.ini
 
 # --- Node (in case of frontend bits) ---
 node_modules/
+.claude/settings.local.json
