@@ -7,39 +7,32 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.request import Request
+from rest_framework.mixins import *
+from rest_framework.generics import GenericAPIView
 
 
-class PostViews(APIView):
+class PostViews(GenericAPIView, CreateModelMixin, ListModelMixin):
     name = 'PostViews'
-    throttle_class = []
-    permissions_classes = []
-    authentication_classes = []
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
 
     def get(self, request: Request):
-        posts = Post.objects.all()
-        serialized = PostSerializer(posts, many=True)
-        return Response({'posts': serialized.data})
+        return self.list(request)
 
     def post(self, request: Request):
-        post = PostSerializer(data=request.data)
-
-        if not post.is_valid:
-            return Response({'errors': post.error_messages}, status=status.HTTP_400_BAD_REQUEST)
-
-        post.save()
-        return Response(post.data, status=status.HTTP_201_CREATED)
+        return self.create(request)
 
 
-class PostViewByPk(APIView):
-    name = 'PostByPkViews'
-    throttle_class = []
-    permissions_classes = []
-    authentication_classes = []
+class PostViewByPk(GenericAPIView, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin):
+    name = 'PostViewsByPk'
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
 
     def get(self, request: Request, pk: int):
-        try:
-            post = Post.objects.get(pk=pk)
-        except Post.DoesNotExist:
-            return Response({'errors': 'Post not found with the id {pk}'}, status=status.HTTP_404_NOT_FOUND)
-        serialized = PostSerializer(post)
-        return Response({'post': serialized.data})
+        return self.retrieve(request, pk)
+
+    def put(self, request: Request, pk: int):
+        return self.update(request, pk)
+
+    def delete(self, request: Request, pk: int):
+        return self.destroy(request, pk)
