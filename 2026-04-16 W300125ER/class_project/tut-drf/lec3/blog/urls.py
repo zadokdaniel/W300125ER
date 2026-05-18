@@ -5,11 +5,10 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 
-router.register('pictures', views.PicturesViewSet, 'pictures')
+router.register('post', views.PostViewsSet, 'post')
+router.register('comment', views.CommentViewSet, 'comment')
 
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('posts/', views.PostViews.as_view()),
-    path('posts/<int:pk>/', views.PostViewByPk.as_view())
 ]
