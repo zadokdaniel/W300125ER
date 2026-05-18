@@ -15,22 +15,20 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterField(
             model_name='post',
-            name='content',
-            field=models.TextField(validators=[django.core.validators.MinLengthValidator(5, message='Content is too short'), blog.models.validate_not_length_11]),
-        ),
-        migrations.AlterField(
-            model_name='post',
             name='title',
-            field=models.CharField(error_messages={'blank': 'blank field please fill', 'unique': 'unique error'}, max_length=100, unique=True),
+            field=models.CharField(error_messages={
+                                   'blank': 'blank field please fill', 'unique': 'unique error'}, max_length=100, unique=True),
         ),
         migrations.CreateModel(
             name='Comment',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('content', models.TextField()),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('updated', models.DateTimeField(auto_now_add=True)),
-                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='blog.post')),
+                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='comments', to='blog.post')),
             ],
         ),
     ]
