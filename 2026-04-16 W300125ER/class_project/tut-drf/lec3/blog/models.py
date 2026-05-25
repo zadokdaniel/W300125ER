@@ -6,7 +6,7 @@ import django.core.validators as v
 
 class Post(models.Model):
     owner = models.ForeignKey(
-        'auth.User', related_name='posts', on_delete=models.CASCADE, default=1)
+        'auth.User', related_name='posts', on_delete=models.CASCADE)
     title = models.CharField(max_length=100, unique=True)
     content = models.TextField(
         validators=[
@@ -22,7 +22,7 @@ class Post(models.Model):
 
 class Comment(models.Model):
     author = models.ForeignKey(
-        'auth.User', related_name='comments', on_delete=models.CASCADE, default=1)
+        'auth.User', related_name='comments', on_delete=models.CASCADE)
     post = models.ForeignKey(
         Post, related_name='comments', on_delete=models.CASCADE)
     content = models.TextField()

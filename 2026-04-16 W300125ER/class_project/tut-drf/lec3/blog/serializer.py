@@ -41,6 +41,7 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = super(CommentSerializer, self).get_fields()
         request = self.context.get('request')
 
+
         if request and request.method == 'POST':
             fields['post'] = serializers.PrimaryKeyRelatedField(
                 queryset=Post.objects.all())

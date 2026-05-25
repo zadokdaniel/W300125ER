@@ -1,3 +1,25 @@
 @local=http://localhost:8000
 
 GET {{local}}/posts/
+
+
+
+
+####
+
+POST {{local}}/login/
+Content-Type: application/json
+
+{
+    "username": "daniel", 
+    "password": "Aa123456"
+}
+
+
+####
+GET {{local}}/users
+Authorization: token e9680a77c4f74c1b544c864c8353ab7a7523cf3c
+
+###
+GET {{local}}/users
+Authorization: basic ZGFuaWVsOkFhMTIzNDU2Cg==
