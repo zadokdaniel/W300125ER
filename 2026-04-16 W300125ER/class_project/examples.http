@@ -18,7 +18,7 @@ Content-Type: application/json
 
 ####
 GET {{local}}/users
-Authorization: token e9680a77c4f74c1b544c864c8353ab7a7523cf3c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc5OTgxMTA5LCJpYXQiOjE3Nzk5ODA4MDksImp0aSI6IjdjYWNiM2Q1OTdmNTRjMGRhNDFhY2EwYjgzM2YwYmQwIiwidXNlcl9pZCI6IjEifQ.88QYKroNmlG2-HRZVteHPZ1FLnllnQSW2upwm_IZeYE
 
 ###
 GET {{local}}/users

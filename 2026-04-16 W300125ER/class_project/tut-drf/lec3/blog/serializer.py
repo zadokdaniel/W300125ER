@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import Post, Comment
+from .models import Post, Comment, UserProfile
 from django.contrib.auth.models import User
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class FlatUserSerializer(serializers.ModelSerializer):
@@ -41,7 +42,6 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = super(CommentSerializer, self).get_fields()
         request = self.context.get('request')
 
-
         if request and request.method == 'POST':
             fields['post'] = serializers.PrimaryKeyRelatedField(
                 queryset=Post.objects.all())
@@ -63,3 +63,26 @@ class PostSerializer(serializers.ModelSerializer):
                   'created', 'updated', 'comments', 'owner']
         # fields = ['id', 'title', 'content', 'created', 'updated']            # all columns
         # exclude = ['id']                                                   # all but the listed columns
+
+
+class BlogTokenSerializer(TokenObtainPairSerializer):
+
+    @classmethod
+    def get_token(cls, user: User):
+        token = super().get_token(user)
+
+        token['name'] = user.get_full_name()
+        token['username'] = user.username
+        token['claims'] = {
+            'isAdmin': user.is_superuser,
+            'isActive': user.is_active
+        }
+
+        return token
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
