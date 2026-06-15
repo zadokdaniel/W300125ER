@@ -7,11 +7,15 @@ function App() {
   const [error, setError] = useState();
 
   useEffect(() => {
-    fetch("http://localhost:5000/api")
+    const controller = new AbortController();
+
+    fetch("http://localhost/api", { signal: controller.signal })
       .then((response) => response.json())
       .then(setData)
       .catch((error) => setError(error.message));
-  });
+
+    return () => controller.abort();
+  }, []);
 
   return (
     <>
